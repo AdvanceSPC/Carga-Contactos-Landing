@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="assets/images/favicon.png"
+    />
+    <link rel="stylesheet" href="/assets/css/custom-styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Importar Datos</title>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>Carga de Archivos</h1>
+        <p>Camino rápido y fácil</p>
+        <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+            <div id="drop-zone" class="drop-zone">
+                <img src="/assets/images/folder-icon.png" alt="Folder Icon" class="folder-icon">
+                <p id="fileMessage">Arrastra y suelta el archivo aquí o haz clic para seleccionarlo</p>
+                <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
+            </div>
+            <button id="submitBtn" type="submit">Subir</button>
+        </form>
+        <div id="status"></div>
+    </div>
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('csvFile').addEventListener('change', function (e) {
+            const fileName = e.target.files[0]?.name || '';
+            const messageElement = document.getElementById('fileMessage');
+            messageElement.textContent = fileName ? `Archivo seleccionado: ${fileName}` : 'Arrastra y suelta el archivo aquí o haz clic para seleccionarlo';
+        });
+        document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            document.body.classList.add('loading-active');
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            document.getElementById('submitBtn').disabled = true;
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+                const result = await response.json();
+                document.body.classList.remove('loading-active');
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: result.message,
+                        confirmButtonText: 'OK',
+                    });
+                    form.reset();
+                    document.getElementById('fileMessage').textContent = 'Arrastra y suelta el archivo aquí o haz clic para seleccionarlo';
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message,
+                        confirmButtonText: 'OK',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.body.classList.remove('loading-active');
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al subir los datos.',
+                    confirmButtonText: 'OK',
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+contact_id,contact_email,contact_name,contact_lastname,contact_phone,deal_name,deal_amount,deal_stage
+1234567896,john.doe@example.com,John,Doe,1234567890,Website Redesign,5000,appointmentscheduled
+93761671750,mary.jones@example.com,Mary,Jones,9876543210,Venta Equipos de Natación,3000,qualifiedtobuy
+93761671751,james.smith@example.com,James,Smith,9876543211,Venta Balón de Fútbol,1500,presentationscheduled
+93761671752,emma.brown@example.com,Emma,Brown,9876543212,Venta Zapatillas Deportivas,1000,decisionmakerboughtin
+93761671753,olivia.davis@example.com,Olivia,Davis,9876543213,Venta Chaqueta Deportiva,2000,contractsent
+93761671754,liam.miller@example.com,Liam,Miller,9876543214,Venta Equipos de Tenis,2500,closedwon
+93777845760,sophia.garcia@example.com,Sophia,Garcia,9876543215,Venta Raquetas de Tenis,2200,closedlost
